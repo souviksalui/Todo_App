@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node.js To-Do App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <header>
+            <h1>Task Board</h1>
+            <form id="add-task-form">
+                <input type="text" id="task-title" placeholder="Enter a new task title..." required>
+                <input type="text" id="task-tags" placeholder="Tags (comma-separated)">
+                <button type="submit">Add Task</button>
+            </form>
+        </header>
+
+        <main class="kanban-board">
+            <div class="kanban-column">
+                <div class="column-header" style="--color: #E879F9;">
+                    <h2>To Do</h2>
+                    <span id="todo-count" class="task-count">0</span>
+                </div>
+                <div class="tasks-container" id="todo-column">
+                    </div>
+            </div>
+
+            <div class="kanban-column">
+                <div class="column-header" style="--color: #FBBF24;">
+                    <h2>Doing</h2>
+                    <span id="doing-count" class="task-count">0</span>
+                </div>
+                <div class="tasks-container" id="doing-column">
+                    </div>
+            </div>
+
+            <div class="kanban-column">
+                <div class="column-header" style="--color: #34D399;">
+                    <h2>Done</h2>
+                    <span id="done-count" class="task-count">0</span>
+                </div>
+                <div class="tasks-container" id="done-column">
+                    </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
