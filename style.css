@@ -7,6 +7,7 @@
     --accent-color: #3B82F6;
 }
 
+/* --- Base & Layout --- */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -25,31 +26,102 @@ body {
     margin: 0 auto;
 }
 
-header {
+/* --- Navigation --- */
+.main-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     margin-bottom: 2rem;
 }
 
-header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+.menu-toggle {
+    font-size: 2rem;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
 }
 
-#add-task-form {
+#page-title {
+    font-size: 2.5rem;
+}
+
+.main-nav {
+    display: none; /* Hidden by default */
+    background-color: var(--card-color);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.main-nav.show {
+    display: block;
+}
+
+.main-nav ul {
+    list-style: none;
     display: flex;
+    flex-direction: column;
     gap: 0.5rem;
 }
 
-#add-task-form input {
-    flex-grow: 1;
+.main-nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    display: block;
+    padding: 0.75rem;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+
+.main-nav a:hover {
+    background-color: var(--border-color);
+}
+
+.main-nav a.active {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+/* --- Page Management --- */
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+/* --- Forms & Filters --- */
+.filter-section {
+    display: flex;
+    gap: 0.5rem;
     background-color: var(--card-color);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.filter-section form {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 0.5rem;
+}
+
+.filter-section input {
+    flex-grow: 1;
+    background-color: var(--bg-color);
     border: 1px solid var(--border-color);
     color: var(--text-color);
     padding: 0.75rem;
     border-radius: 6px;
     font-size: 1rem;
+    min-width: 200px;
 }
 
-#add-task-form button {
+.filter-section button,
+#task-form button {
     background-color: var(--accent-color);
     color: white;
     border: none;
@@ -61,10 +133,42 @@ header h1 {
     transition: background-color 0.2s;
 }
 
-#add-task-form button:hover {
+.filter-section button:hover,
+#task-form button:hover {
     background-color: #2563EB;
 }
 
+#task-form {
+    background-color: var(--card-color);
+    padding: 1.5rem;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#task-form label {
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+#task-form input,
+#task-form textarea {
+    width: 100%;
+    font-size: 1rem;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 6px;
+    padding: 0.75rem;
+}
+
+#task-form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* --- Kanban Board --- */
 .kanban-board {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -100,6 +204,7 @@ header h1 {
     min-height: 200px;
 }
 
+/* --- Task Card --- */
 .task-card {
     background-color: var(--card-color);
     border: 1px solid var(--border-color);
@@ -113,6 +218,26 @@ header h1 {
     font-size: 1.1rem;
     font-weight: 500;
     margin-bottom: 0.75rem;
+}
+
+.task-card .description {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+    white-space: pre-wrap; /* Preserve line breaks in description */
+}
+
+.task-card .task-images {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.task-card .task-images img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
 }
 
 .task-card .controls {
@@ -151,6 +276,7 @@ header h1 {
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
+    margin-bottom: 1rem;
 }
 
 .tag {
@@ -160,4 +286,100 @@ header h1 {
     border-radius: 12px;
     font-size: 0.75rem;
     font-weight: 500;
+}
+
+.task-card .card-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: absolute;
+    top: 10px;
+    right: 30px;
+}
+
+.card-actions .icon-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.card-actions .icon-btn:hover {
+    color: var(--text-color);
+}
+
+/* --- Modal (for Logs) --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: var(--card-color);
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+    position: relative;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.close-btn {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: white;
+}
+
+/* --- Log Display Styles --- */
+#logs-container {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.log-entry {
+    padding: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.log-entry:last-child {
+    border-bottom: none;
+}
+
+.log-entry p {
+    margin: 5px 0;
+}
+
+.log-entry em {
+    color: var(--text-muted);
+    font-style: normal;
+}
+
+.log-entry .timestamp {
+    font-size: 0.8em;
+    color: var(--text-muted);
 }
