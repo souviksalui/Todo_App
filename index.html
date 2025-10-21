@@ -1,69 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Node.js To-Do App</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-    <div class="app-container">
-        <header>
-            <h1>Task Board</h1>
-            <form id="add-task-form">
-                <input type="text" id="task-title" placeholder="Enter a new task title..." required>
-                <input type="text" id="task-tags" placeholder="Tags (comma-separated)">
-                <button type="submit">Add Task</button>
-            </form>
-        </header>
-
-        <main class="kanban-board">
-            <div class="kanban-column">
-                <div class="column-header" style="--color: #E879F9;">
-                    <h2>To Do</h2>
-                    <span id="todo-count" class="task-count">0</span>
-                </div>
-                <div class="tasks-container" id="todo-column">
-                    </div>
-            </div>
-
-            <div class="kanban-column">
-                <div class="column-header" style="--color: #FBBF24;">
-                    <h2>Doing</h2>
-                    <span id="doing-count" class="task-count">0</span>
-                </div>
-                <div class="tasks-container" id="doing-column">
-                    </div>
-            </div>
-
-            <div class="kanban-column">
-                <div class="column-header" style="--color: #34D399;">
-                    <h2>Done</h2>
-                    <span id="done-count" class="task-count">0</span>
-                </div>
-                <div class="tasks-container" id="done-column">
-                    </div>
-            </div>
-        </main>
-    </div>
-
-        <div id="edit-modal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-        <h2 id="modal-title">Edit Task</h2>
-        <span class="close-btn">&times;</span>
-        </div>
-        <div id="modal-body" class="modal-body">
-        </div>
-    </div>
-    </div>
-
-    <script src="app.js"></script>
-</body>
-</html> -->
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,6 +18,7 @@
                 <li><a href="#task-board" class="nav-link active">📋 Task Board</a></li>
                 <li><a href="#add-update" class="nav-link">➕ Add New Task</a></li>
                 <li><a href="#logs-check" class="nav-link">🔎 Logs Check</a></li>
+                <li><a href="#manage-users" class="nav-link">👥 Manage Users</a></li>
             </ul>
         </nav>
 
@@ -120,7 +55,7 @@
             </div>
         </main>
 
-        <main id="page-add-update" class="page">
+        <!-- <main id="page-add-update" class="page">
             <h2 id="add-update-title">Add New Task</h2>
             <form id="task-form">
                 <input type="hidden" id="task-id">
@@ -130,10 +65,31 @@
                 <textarea id="task-description"></textarea>
                 <label for="task-tags-input">Tags (comma-separated)</label>
                 <input type="text" id="task-tags-input">
+                <label for="task-users-select">Assign Users</label>
+                <select id="task-users-select" multiple></select>
                 <label for="task-images">Upload Images (Max 1MB each)</label>
                 <input type="file" id="task-images" name="images" multiple accept="image/*">
                 <button type="submit">Save Task</button>
             </form>
+        </main> -->
+
+        <main id="page-add-update" class="page">
+            <h2 id="add-update-title">Add New Task</h2>
+        <form id="task-form">
+        <input type="hidden" id="task-id">
+
+        <label for="task-title-input">Title</label>
+        <input type="text" id="task-title-input" name="title" required> <label for="task-description">Description</label>
+        <textarea id="task-description" name="description"></textarea> <label for="task-tags-input">Tags (comma-separated)</label>
+        <input type="text" id="task-tags-input" name="tags"> <label for="task-users-select">Assign Users</label>
+        <select id="task-users-select" multiple>
+            </select>
+
+        <label for="task-images">Upload Images (Max 1MB each)</label>
+        <input type="file" id="task-images" name="images" multiple accept="image/*">
+
+        <button type="submit">Save Task</button>
+        </form>
         </main>
 
         <main id="page-logs-check" class="page">
@@ -143,14 +99,39 @@
                     <input type="date" id="log-filter-start-date">
                     <input type="date" id="log-filter-end-date">
                     <button type="submit">Search Logs</button>
+
+                    <input type="text" id="log-export-emails" placeholder="Email to (comma-separated)...">
+                    <button type="button" id="log-export-btn">Email Logs</button>
                 </form>
             </section>
             <div id="logs-container">
                 </div>
         </main>
+
+        <main id="page-manage-users" class="page">
+            <section id="add-user-section">
+                <h2>Add a New User</h2>
+                <form id="add-user-form">
+                    <label for="user-name">Name</label>
+                    <input type="text" id="user-name" required>
+                    <label for="user-email">Email</label>
+                    <input type="email" id="user-email" required>
+                    <label for="user-phone">Phone (Optional)</label>
+                    <input type="tel" id="user-phone">
+                    <button type="submit">Add User & Send OTP</button>
+                </form>
+            </section>
+    
+        <section id="user-list-section">
+            <h2>Existing Users</h2>
+            <div id="users-container">
+                </div>
+        </section>
+        </main>
+
     </div>
 
-    <div id="log-modal" class="modal">
+    <!-- <div id="log-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 id="modal-title">Task History</h2>
@@ -158,6 +139,17 @@
             </div>
             <div id="modal-body" class="modal-body">
                 </div>
+        </div>
+    </div> -->
+
+    <div id="main-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h2 id="modal-title">Modal Title</h2>
+            <span class="close-btn">&times;</span>
+            </div>
+            <div id="modal-body" class="modal-body">
+            </div>
         </div>
     </div>
 
