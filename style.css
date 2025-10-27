@@ -477,6 +477,7 @@ form select[multiple] option:checked {
     margin-top: 0.75rem;
     padding-top: 0.75rem;
     border-top: 1px solid var(--border-color);
+    min-height: 32px; /* Ensure space even if empty */
 }
 .assigned-user {
     display: flex;

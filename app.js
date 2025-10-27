@@ -23,6 +23,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalBody = mainModal.querySelector('#modal-body');
     const closeModalBtn = mainModal.querySelector('.close-btn');
 
+    // Add this helper function somewhere near the top or near the form handlers
+    const MAX_FILE_SIZE_MB = 1;
+    const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+
+    function validateFiles(fileInputId) {
+        const fileInput = document.getElementById(fileInputId);
+        if (!fileInput || !fileInput.files) return true; // No input or no files selected
+
+        for (const file of fileInput.files) {
+            if (file.size > MAX_FILE_SIZE_BYTES) {
+                alert(`File "${file.name}" is too large. Maximum size is ${MAX_FILE_SIZE_MB}MB.`);
+                return false; // Validation failed
+            }
+        }
+        return true; // All files are within the limit
+    }
+
     // --- NAVIGATION LOGIC ---
     function navigateTo(hash) {
         Object.values(pages).forEach(page => page.classList.remove('active'));
@@ -153,6 +170,9 @@ document.addEventListener('DOMContentLoaded', () => {
             ${task.description ? `<p class="description">${task.description}</p>` : ''}
             <div class="tags-container">${tagsHTML}</div>
             <div class="task-images">${imagesHTML}</div>
+            <div class="assigned-users-container">
+            ${assignedUsersHTML}
+            </div>
             <div class="controls">
                 <select class="status-select">
                     <option value="To Do" ${task.status === 'To Do' ? 'selected' : ''}>To Do</option>
@@ -217,6 +237,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     taskForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        if (!validateFiles('task-images')) {
+        return; // Stop submission if validation fails
+         }
         const taskId = document.getElementById('task-id').value;
         const formData = new FormData(taskForm);
         
@@ -364,7 +387,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 <label for="modal-task-tags">Tags (comma-separated)</label>
                 <input type="text" id="modal-task-tags" value="${(task.tags || []).join(', ')}">
-
+                
+                <label for="modal-task-users">Assign Users</label>
+                <select id="modal-task-users" multiple></select>
                 ${task.imageUrls && task.imageUrls.length > 0 ? `
                     <label>Existing Images</label>
                     <div class="existing-images-section">${existingImagesHTML}</div>
@@ -380,7 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // NEW: Populate the user select in the modal
         populateUserSelect(
             document.getElementById('modal-task-users'),
-            task.assignedUsers
+            task.assignedUsers // Pass the currently assigned users
         );
 
         mainModal.style.display = "block";
@@ -404,6 +429,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('modal-edit-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            if (!validateFiles('modal-task-images')) {
+            return; // Stop submission if validation fails
+           }
             const formData = new FormData();
             formData.append('taskIdentifier', document.getElementById('modal-task-identifier').value); // GET NEW VALUE
             formData.append('title', document.getElementById('modal-task-title').value);
